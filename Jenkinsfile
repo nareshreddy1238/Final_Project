@@ -8,12 +8,14 @@ pipeline {
                 sh 'mvn compile'
             }
         }
+
         stage('Build') {
             steps {
                 echo 'Building'
                 sh 'mvn clean package'
             }
         }
+
         stage('Test') {
             steps {
                 echo 'Unit Testing....'
@@ -22,9 +24,16 @@ pipeline {
         post {
          always {
            junit '**/target/surefire-reports/*.xml'
-     }
-    }
-   }
+              }
+             }
+           }
+         
+        stage ("code coverage ") { 
+            steps {
+          cobertura coberturaReportFile: 'path-to/coverage.xml'
+        }
+       }
+ 
   }
  }
     
