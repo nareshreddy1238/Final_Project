@@ -18,17 +18,22 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo 'Unit Testing....'
+                echo 'Unit Testing'
                 sh 'mvn test'
             }
         post {
          always {
            junit '**/target/surefire-reports/*.xml'
-           step([$class: 'CoberturaPublisher', autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: '**/coverage.xml', failUnhealthy: false, failUnstable: false, maxNumberOfBuilds: 0, onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false])
-              }
+               }
              }
            }
- 
+        
+        stage('Code Covarage') {
+             steps {
+                 echo 'Code Covarage'
+                 sh 'mvn cobertura:cobertura -Dcobertura.report.format=xml'
+            }
+          }
   }
  }
     
