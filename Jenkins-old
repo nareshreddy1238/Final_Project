@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('validate') {
+            steps {
+                echo 'validate..'
+                sh 'mvn compile'
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'Building'
+                sh 'mvn clean package'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Unit Testing....'
+                sh 'mvn test'
+            }
+        }
+
+
+        post{
+           always{
+              junit ''
+          }
+        }	
+        stage('Analysis') {
+            steps {
+                echo 'Sonar Analysis' 
+                sh 'mvn sonar:sonar -Dsonar.host.url=http://3.235.31.69:9000 -Dsonar.login=1ffd64e744e76ecf94e1630b60fca68a3b73a068'
+            }
+        }
+        stage('Release') {
+            steps {
+                echo 'Nexus Release..'
+                sh 'mvn deploy'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Tomcat Deploy'
+                sh ''
+            }
+        }
+
+    }
+}
+    
