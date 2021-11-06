@@ -20,6 +20,11 @@ pipeline {
                 sh 'mvn test'
             }
         }
+        post {
+         always {
+          junit 'jenkins_javaproject/target/surefire-reports/*.xml'
     }
+  }
+ }
 }
     
