@@ -39,6 +39,34 @@ pipeline {
             } 
           }
         }
-  }
+
+        stage('Analysis') {
+            steps {
+                echo 'Sonar Analysis'
+                sh 'mvn sonar:sonar -Dsonar.host.url=http://18.212.192.181:9000 -Dsonar.login=92d44bab121d10b467eb51e047167c057921df9b'
+            }
+         }
+        
+        stage('Publish'){
+            steps {
+                 echo 'Nexus Release'
+                 nexusArtifactUploader artifacts: [
+                              [ 
+                                artifactId: 'WebAppCal', 
+                                classifier: '', 
+                                file: 'target/WebAppCal-1.2.8.war', 
+                                type: 'war'
+                              ]
+                          ], 
+                          credentialsId: 'Nexus', 
+                          groupId: 'com.web.cal', 
+                          nexusUrl: '18.212.192.181:8081', 
+                          nexusVersion: 'nexus2', 
+                          protocol: 'http', 
+                          repository: 'releases', 
+                          version: '1.2.8'
+             }
+          }
+   }
  }
     
