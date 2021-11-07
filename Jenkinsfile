@@ -50,6 +50,10 @@ pipeline {
         stage('Publish'){
             steps {
                  echo 'Nexus Release'
+                 sh 'mvn deploy'
+               }
+             post{
+               always{
                  nexusArtifactUploader artifacts: [
                               [ 
                                 artifactId: 'WebAppCal', 
@@ -66,7 +70,8 @@ pipeline {
                           repository: 'releases', 
                           version: '1.2.8'
              }
-          }
+         }
+      }
    }
  }
     
