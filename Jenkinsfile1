@@ -12,7 +12,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sshagent(['Tomcat_user']) {
-                sh 'scp -o StrictHostKeyChecking=no jenkins_javaproject/target/WebAppCal-1.2.8.war centos@172.31.80.138:~/apache-tomcat-7.0.94/webapps/' 
+                sh 'scp -o StrictHostKeyChecking=no target/WebAppCal-1.2.8.war centos@172.31.80.138:~/apache-tomcat-7.0.94/webapps' 
     }       
    }
  }
