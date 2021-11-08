@@ -8,6 +8,7 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
+
         stage('Deploy') {
             steps {
                 sshagent(['Tomcat_user']) {
