@@ -2,37 +2,21 @@ pipeline {
     agent any
 
     stages {
-        stage('validate') {
-            steps {
-                echo 'validate..'
-                sh 'mvn compile'
-            }
-        }
-
         stage('Build') {
             steps {
                 echo 'Building'
                 sh 'mvn clean package'
             }
         }
-        stage('Deploy'){
-              steps {
-                   echo 'Deploy to Tomcat'
-                  }
-          post {
-            always{
-                  deploy adapters: [
-                        tomcat7(credentialsId: 'TC', 
-                        path: '', 
-                        url: 'http://3.83.243.92:9090/manager/html')
-                       ], 
-                       contextPath: 'Calculator', 
-                       onFailure: false, 
-                       war: 'target/**.war'
-                }
-        }
-     }
-              
+        stage('Deploy') {
+            steps {
+                sshagent(['Tomcat_user']) {
+                   sh 'scp -i centos@3.95.192.72:~/jenkins_javaproject/target/WebAppCal-1.2.8.war ~/apache-tomcat-7.0.94/webapps/' 
+    }       
    }
  }
+
+}
+}
+
     
