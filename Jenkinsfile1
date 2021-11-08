@@ -24,7 +24,7 @@ pipeline {
                   deploy adapters: [
                         tomcat7(credentialsId: 'TC', 
                         path: '', 
-                        url: 'http://3.83.243.92:9090/')
+                        url: 'http://3.83.243.92:9090/manager/html')
                        ], 
                        contextPath: 'Calculator', 
                        onFailure: false, 
